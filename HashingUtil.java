@@ -9,7 +9,7 @@ import java.util.Random;
 public class HashingUtil {
     byte[] toHash;
 
-    private AlgorithmType algorithmType;
+    private AlgorithmType algorithmType = AlgorithmType.SHA512;
 
     private int saltLength = 0;
     private int saltCycles = 0;
@@ -27,12 +27,15 @@ public class HashingUtil {
     }
     public HashingUtil(){
         this.toHash = new byte[0];
-        algorithmType = AlgorithmType.SHA512;
     }
 
     public HashingUtil withSalt(int saltLength, int saltingCycles){
         this.saltLength = saltLength;
         this.saltCycles = saltingCycles;
+        return this;
+    }
+    public HashingUtil withAlgorithm(AlgorithmType algorithmType){
+        this.algorithmType = algorithmType;
         return this;
     }
 
@@ -43,13 +46,14 @@ public class HashingUtil {
         return this;
     }*/
 
-    public String computeStringWithAlgorithm(AlgorithmType algorithmType){
-        this.algorithmType = algorithmType;
-        return computeStringHash();
+    public String asString(){
+        return getStringHashWithoutPrefix();
+    }
+    public String asStringWithPrefix(){
+        return getStringHashWithPrefix();
     }
 
-    public byte[] computeBytesWithAlgorithm(AlgorithmType algorithmType){
-        this.algorithmType = algorithmType;
+    public byte[] asBytes(AlgorithmType algorithmType){
         return computeByteHash();
     }
 
@@ -61,12 +65,17 @@ public class HashingUtil {
     }
 
 
-    private String computeStringHash(){
+    private String getStringHashWithPrefix(){
         byte[] salt = generateSalt(saltLength);
         String result = byteArrayToHex(computeByteHash(salt, this.saltCycles, this.toHash, this.algorithmType));
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(String.format("%s$%d$%s.%s", algorithmType.prefix, saltCycles, byteArrayToHex(salt), result));
         return stringBuilder.toString();
+    }
+    private String getStringHashWithoutPrefix(){
+        byte[] salt = generateSalt(saltLength);
+        String result = byteArrayToHex(computeByteHash(salt, this.saltCycles, this.toHash, this.algorithmType));
+        return result;
     }
 
     private byte[] computeByteHash(byte[] salt, int saltCycles, byte[] toHash, AlgorithmType algorithmType){
