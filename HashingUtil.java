@@ -200,7 +200,7 @@ public class HashingUtil {
     }
 
     public enum AlgorithmType{
-        SHA512("$SHA512", "SHA-512"), SHA256("$SHA256","SHA-256"), MD5("$MD5","MD5"), BLOWFISH("$BLOWFISH", "BLOWFISH");
+        SHA512("$SHA512", "SHA-512"), SHA256("$SHA256","SHA-256"), MD5("$MD5","MD5");
         private String prefix;
         private String name;
 
