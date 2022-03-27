@@ -5,7 +5,7 @@ Basic hashing util for java
 - SHA 256
 - MD5
 ## Features
-- Hash byte array or string => outputs both byte arry and string with prefixes
+- Hash byte array or string => outputs both byte array and string with prefixes
 - Salt hash with unlimited byte prefix
 - Salt hash with unlimited salt iterations
 - Compare unhashed string against hashed string
